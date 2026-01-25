@@ -43,7 +43,6 @@ public class RegisterUserService implements RegisterUserUseCase {
         // Crear el usuario usando el constructor del record
         LocalDateTime now = LocalDateTime.now();
         User user = new User(
-                null, // El ID se generará en la base de datos
                 request.email(),
                 encodePassword(request.password()),
                 RoleType.USER,

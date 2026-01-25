@@ -31,15 +31,14 @@ public class UserMapper {
             return null;
         }
 
-        UserEntity entity = new UserEntity();
-        entity.setId(domain.id());
-        entity.setEmail(domain.email());
-        entity.setPassword(domain.password());
-        entity.setRole(domain.role());
-        entity.setEnabled(domain.enabled());
-        entity.setCreatedAt(domain.createdAt());
-        entity.setUpdatedAt(domain.updatedAt());
-
-        return entity;
+        return new UserEntity(
+                domain.id(),
+                domain.email(),
+                domain.password(),
+                domain.role(),
+                domain.enabled(),
+                domain.createdAt(),
+                domain.updatedAt()
+        );
     }
 }

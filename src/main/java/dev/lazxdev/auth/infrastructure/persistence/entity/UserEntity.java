@@ -3,8 +3,6 @@ package dev.lazxdev.auth.infrastructure.persistence.entity;
 import dev.lazxdev.auth.domain.model.RoleType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -12,7 +10,7 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "UUID", nullable = false, updatable = false)
     private UUID id;
 
     @Column(nullable = false, unique = true, length = 100)
@@ -33,6 +31,19 @@ public class UserEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    protected UserEntity() {}
+
+    public UserEntity(UUID id, String email, String password, RoleType role,
+                      boolean enabled, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.enabled = enabled;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -67,5 +78,4 @@ public class UserEntity {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-
 }
