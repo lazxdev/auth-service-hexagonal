@@ -1,7 +1,7 @@
 package dev.lazxdev.auth.application.service;
 
-import dev.lazxdev.auth.application.dto.RegisterRequest;
-import dev.lazxdev.auth.application.dto.UserResponse;
+import dev.lazxdev.auth.application.dto.AuthRequest;
+import dev.lazxdev.auth.application.dto.RegisterResponse;
 import dev.lazxdev.auth.application.port.in.RegisterUserUseCase;
 import dev.lazxdev.auth.application.port.out.PasswordEncoderPort;
 import dev.lazxdev.auth.application.port.out.UserRepositoryPort;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,7 +30,7 @@ public class RegisterUserService implements RegisterUserUseCase {
     }
 
     @Override
-    public UserResponse register(RegisterRequest request) {
+    public RegisterResponse register(AuthRequest request) {
 
         if (userRepository.existsByEmail(request.email())) {
             throw new ApplicationException(
@@ -40,7 +39,6 @@ public class RegisterUserService implements RegisterUserUseCase {
             );
         }
 
-        // Crear el usuario usando el constructor del record
         LocalDateTime now = LocalDateTime.now();
         User user = new User(
                 request.email(),
@@ -51,10 +49,8 @@ public class RegisterUserService implements RegisterUserUseCase {
                 now
         );
 
-        // Guardar el usuario
         User savedUser = userRepository.save(user);
 
-        // Retornar respuesta
         return mapToUserResponse(savedUser);
     }
 
@@ -69,11 +65,10 @@ public class RegisterUserService implements RegisterUserUseCase {
         }
     }
 
-    private UserResponse mapToUserResponse(User user) {
+    private RegisterResponse mapToUserResponse(User user) {
         Set<String> roleNames = Set.of(user.role().name());
 
-        return new UserResponse(
-                user.id(),
+        return new RegisterResponse(
                 user.email(),
                 roleNames,
                 user.enabled(),

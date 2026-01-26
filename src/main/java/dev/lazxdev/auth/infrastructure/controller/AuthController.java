@@ -1,7 +1,7 @@
 package dev.lazxdev.auth.infrastructure.controller;
 
-import dev.lazxdev.auth.application.dto.RegisterRequest;
-import dev.lazxdev.auth.application.dto.UserResponse;
+import dev.lazxdev.auth.application.dto.AuthRequest;
+import dev.lazxdev.auth.application.dto.RegisterResponse;
 import dev.lazxdev.auth.application.port.in.RegisterUserUseCase;
 import dev.lazxdev.auth.infrastructure.controller.response.ApiResponse;
 import dev.lazxdev.auth.infrastructure.controller.response.ResponseHandler;
@@ -21,15 +21,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserResponse>> register(
-            @Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<RegisterResponse>> register(
+            @Valid @RequestBody AuthRequest request) {
 
-        UserResponse userResponse = registerUserUseCase.register(request);
+        RegisterResponse registerResponse = registerUserUseCase.register(request);
 
         return ResponseHandler.createResponse(
                 HttpStatus.CREATED,
                 "Successfully registered user",
-                userResponse
+                registerResponse
         );
     }
 }

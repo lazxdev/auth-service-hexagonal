@@ -15,8 +15,6 @@ public enum ApplicationErrorMessage {
     // Not found errors (404)
     USER_NOT_FOUND(404, "USER_NOT_FOUND", "Usuario no encontrado: "),
 
-    // Eliminado: ROLE_NOT_FOUND
-
     // Forbidden errors (403)
     INSUFFICIENT_PERMISSIONS(403, "INSUFFICIENT_PERMISSIONS", "Permisos insuficientes para esta operación"),
 

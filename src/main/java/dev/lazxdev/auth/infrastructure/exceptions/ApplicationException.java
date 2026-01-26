@@ -57,7 +57,6 @@ public class ApplicationException extends RuntimeException {
         return "UnknownOrigin";
     }
 
-    // Getters
     public String getType() { return type; }
     public int getStatusCode() { return statusCode; }
     public String getOrigin() { return origin; }
