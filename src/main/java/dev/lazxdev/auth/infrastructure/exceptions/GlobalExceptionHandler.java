@@ -1,6 +1,8 @@
 package dev.lazxdev.auth.infrastructure.exceptions;
 
 import dev.lazxdev.auth.infrastructure.controller.response.ApiResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,34 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getStatusCode()));
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ApiResponse<Object>> handleJwtException(JwtException ex) {
+        log.warn("JWT Exception: {}", ex.getMessage(), ex);
+
+        String errorType = "INVALID_TOKEN";
+        String message = "Token inválido";
+
+        if (ex instanceof ExpiredJwtException) {
+            errorType = "TOKEN_EXPIRED";
+            message = "Token expired";
+        }
+
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("timestamp", LocalDateTime.now());
+        errorDetails.put("hint", "Please log in again or renew your token");
+
+        ApiResponse<Object> response = new ApiResponse<>(
+                HttpStatus.UNAUTHORIZED.value(),
+                errorType,
+                message,
+                "GLOBAL_EXCEPTION_HANDLER",
+                null,
+                errorDetails
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

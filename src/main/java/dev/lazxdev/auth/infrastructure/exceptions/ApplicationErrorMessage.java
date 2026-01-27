@@ -11,15 +11,19 @@ public enum ApplicationErrorMessage {
     INVALID_EMAIL_FORMAT(400, "INVALID_EMAIL_FORMAT", "Formato de email inválido: "),
     PASSWORD_TOO_SHORT(400, "PASSWORD_TOO_SHORT", "La contraseña debe tener al menos 6 caracteres"),
     INVALID_CREDENTIALS(400, "INVALID_CREDENTIALS", "Credenciales inválidas"),
+    INVALID_TOKEN(400, "INVALID_TOKEN", "Token inválido o expirado"),
+    REFRESH_TOKEN_EXPIRED(400, "REFRESH_TOKEN_EXPIRED", "Refresh token expirado"),
 
     // Not found errors (404)
     USER_NOT_FOUND(404, "USER_NOT_FOUND", "Usuario no encontrado: "),
+    REFRESH_TOKEN_NOT_FOUND(404, "REFRESH_TOKEN_NOT_FOUND", "Refresh token no encontrado"),
 
     // Forbidden errors (403)
     INSUFFICIENT_PERMISSIONS(403, "INSUFFICIENT_PERMISSIONS", "Permisos insuficientes para esta operación"),
 
     // Internal errors (500)
     PASSWORD_HASHING_ERROR(500, "PASSWORD_HASHING_ERROR", "Error al encriptar la contraseña"),
+    TOKEN_GENERATION_ERROR(500, "TOKEN_GENERATION_ERROR", "Error al generar el token"),
     AUDIT_LOG_FAILED(500, "AUDIT_LOG_FAILED", "Error al registrar en el log de auditoría"),
 
     // Default
