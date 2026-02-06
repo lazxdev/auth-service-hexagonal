@@ -2,32 +2,26 @@ package dev.lazxdev.auth.infrastructure.exceptions;
 
 public enum ApplicationErrorMessage {
 
-    // Conflict errors (409)
-    EMAIL_ALREADY_REGISTERED(409, "EMAIL_ALREADY_REGISTERED", "El email ya está registrado: "),
-    ACCOUNT_LOCKED(409, "ACCOUNT_LOCKED", "La cuenta está bloqueada: "),
-    ACCOUNT_DISABLED(409, "ACCOUNT_DISABLED", "La cuenta está deshabilitada: "),
+    EMAIL_ALREADY_REGISTERED(409, "EMAIL_ALREADY_REGISTERED", "The email is already registered: "),
+    ACCOUNT_LOCKED(409, "ACCOUNT_LOCKED", "The account is blocked: "),
+    ACCOUNT_DISABLED(409, "ACCOUNT_DISABLED", "The account is disabled: "),
 
-    // Validation errors (400)
-    INVALID_EMAIL_FORMAT(400, "INVALID_EMAIL_FORMAT", "Formato de email inválido: "),
-    PASSWORD_TOO_SHORT(400, "PASSWORD_TOO_SHORT", "La contraseña debe tener al menos 6 caracteres"),
-    INVALID_CREDENTIALS(400, "INVALID_CREDENTIALS", "Credenciales inválidas"),
-    INVALID_TOKEN(400, "INVALID_TOKEN", "Token inválido o expirado"),
-    REFRESH_TOKEN_EXPIRED(400, "REFRESH_TOKEN_EXPIRED", "Refresh token expirado"),
+    INVALID_EMAIL_FORMAT(400, "INVALID_EMAIL_FORMAT", "Invalid email format: "),
+    PASSWORD_TOO_SHORT(400, "PASSWORD_TOO_SHORT", "The password must be at least 6 characters long"),
+    INVALID_CREDENTIALS(400, "INVALID_CREDENTIALS", "Invalid credentials: "),
+    INVALID_TOKEN(400, "INVALID_TOKEN", "Invalid or expired token"),
+    REFRESH_TOKEN_EXPIRED(400, "REFRESH_TOKEN_EXPIRED", "Refresh expired token"),
 
-    // Not found errors (404)
-    USER_NOT_FOUND(404, "USER_NOT_FOUND", "Usuario no encontrado: "),
-    REFRESH_TOKEN_NOT_FOUND(404, "REFRESH_TOKEN_NOT_FOUND", "Refresh token no encontrado"),
+    USER_NOT_FOUND(404, "USER_NOT_FOUND", "User not found: "),
+    REFRESH_TOKEN_NOT_FOUND(404, "REFRESH_TOKEN_NOT_FOUND", "Refresh token not found: "),
 
-    // Forbidden errors (403)
-    INSUFFICIENT_PERMISSIONS(403, "INSUFFICIENT_PERMISSIONS", "Permisos insuficientes para esta operación"),
+    INSUFFICIENT_PERMISSIONS(403, "INSUFFICIENT_PERMISSIONS", "Insufficient permits for this operation"),
 
-    // Internal errors (500)
-    PASSWORD_HASHING_ERROR(500, "PASSWORD_HASHING_ERROR", "Error al encriptar la contraseña"),
-    TOKEN_GENERATION_ERROR(500, "TOKEN_GENERATION_ERROR", "Error al generar el token"),
-    AUDIT_LOG_FAILED(500, "AUDIT_LOG_FAILED", "Error al registrar en el log de auditoría"),
+    PASSWORD_HASHING_ERROR(500, "PASSWORD_HASHING_ERROR", "Error encrypting password"),
+    TOKEN_GENERATION_ERROR(500, "TOKEN_GENERATION_ERROR", "Error generating token"),
+    AUDIT_LOG_FAILED(500, "AUDIT_LOG_FAILED", "Error logging to audit log"),
 
-    // Default
-    UNEXPECTED_ERROR(500, "UNEXPECTED_ERROR", "Error inesperado del sistema");
+    UNEXPECTED_ERROR(500, "UNEXPECTED_ERROR", "Unexpected system error");
 
     private final int status;
     private final String type;
