@@ -13,19 +13,17 @@ public record RefreshToken(
 ) {
 
     public RefreshToken(
-            String token,
             String email,
             LocalDateTime issuedAt,
-            LocalDateTime expiresAt,
-            boolean revoked
+            LocalDateTime expiresAt
     ) {
         this(
                 UUID.randomUUID(),
-                token,
+                UUID.randomUUID().toString(),
                 email,
                 issuedAt,
                 expiresAt,
-                revoked
+                false
         );
     }
 

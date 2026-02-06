@@ -13,22 +13,17 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 @Component
 public class JwtTokenAdapter implements TokenPort {
 
     private final JwtConfig jwtConfig;
     private final SecretKey accessTokenKey;
-    private final SecretKey refreshTokenKey;
 
     public JwtTokenAdapter(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
         this.accessTokenKey = Keys.hmacShaKeyFor(
                 jwtConfig.getAccessToken().getSecret().getBytes(StandardCharsets.UTF_8)
-        );
-        this.refreshTokenKey = Keys.hmacShaKeyFor(
-                jwtConfig.getRefreshToken().getSecret().getBytes(StandardCharsets.UTF_8)
         );
     }
 
@@ -50,24 +45,6 @@ public class JwtTokenAdapter implements TokenPort {
     }
 
     @Override
-    public String generateRefreshToken(User user) {
-        Instant now = Instant.now();
-        Instant expiration = now.plusMillis(jwtConfig.getRefreshToken().getExpiration());
-        String tokenId = UUID.randomUUID().toString();
-
-        return Jwts.builder()
-                .subject(user.email())
-                .claim("userId", user.id().toString())
-                .claim("email", user.email())
-                .claim("tokenId", tokenId)
-                .claim("type", "REFRESH")
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(expiration))
-                .signWith(refreshTokenKey, Jwts.SIG.HS256)
-                .compact();
-    }
-
-    @Override
     public boolean validateAccessToken(String token) {
         try {
             parseToken(token, accessTokenKey, "ACCESS");
@@ -78,40 +55,15 @@ public class JwtTokenAdapter implements TokenPort {
     }
 
     @Override
-    public boolean validateRefreshToken(String token) {
-        try {
-            parseToken(token, refreshTokenKey, "REFRESH");
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-    @Override
     public String extractEmailFromToken(String token) {
-        try {
-            // Intentar con access token primero
-            Claims claims = parseToken(token, accessTokenKey, null);
-            return claims.get("email", String.class);
-        } catch (JwtException e) {
-            // Si falla, intentar con refresh token
-            try {
-                Claims claims = parseToken(token, refreshTokenKey, null);
-                return claims.get("email", String.class);
-            } catch (JwtException ex) {
-                throw new JwtException("Invalid token: " + ex.getMessage());
-            }
-        }
+        Claims claims = parseToken(token, accessTokenKey, "ACCESS");
+        return claims.get("email", String.class);
     }
 
     @Override
-    public String extractTokenIdFromToken(String token) {
-        try {
-            Claims claims = parseToken(token, refreshTokenKey, "REFRESH");
-            return claims.get("tokenId", String.class);
-        } catch (Exception e) {
-            throw new JwtException("Invalid refresh token: " + e.getMessage());
-        }
+    public String extractUserIdFromToken(String token) {
+        Claims claims = parseToken(token, accessTokenKey, "ACCESS");
+        return claims.get("userId", String.class);
     }
 
     private Claims parseToken(String token, SecretKey key, String expectedType) {
